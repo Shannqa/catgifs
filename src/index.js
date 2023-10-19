@@ -1,19 +1,19 @@
-import config from "/config.js";
+import config from "../config";
 
 const body = document.querySelector("body");
 const img = document.createElement("img");
-//giphy api key
+// giphy api key
 const apiKey = config.API_KEY;
 
-fetch("https://api.giphy.com/v1/gifs/translate?api_key=" + apiKey + "&s=cats", {mode: "cors"})
-  .then(function(response) {
-        return response.json();
-  })
-  .then(function(response) {
+fetch(`https://api.giphy.com/v1/gifs/translate?api_key=${apiKey}&s=cats`, {
+  mode: "cors",
+})
+  .then((response) => response.json())
+  .then((response) => {
     img.src = response.data.images.original.url;
   })
-  .catch(function(err) {
+  .catch((err) => {
     console.log(err);
   });
-  
-  body.appendChild(img);
+
+body.appendChild(img);
