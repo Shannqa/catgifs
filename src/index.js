@@ -24,27 +24,26 @@ body.appendChild(div);
 // giphy api key
 const apiKey = config.API_KEY;
 
-function fetchGifs() {
-  fetch(`https://api.giphy.com/v1/gifs/translate?api_key=${apiKey}&s=cats`, {
-    mode: "cors",
-  })
-    .then((response) => {
-      if (response.status !== 200) {
-        throw new Error(`Something went wrong! Status: ${response.status}`);
-      }
-      // console.log(response);
-      return response.json();
-    })
-    .then((response) => {
-      divError.textContent = "";
-      // console.log(response);
-      gif.src = response.data.images.downsized.url;
-    })
-    .catch((err) => {
-      divError.textContent =
-        "Something went wrong! Sorry, no kitties this time!";
-      console.log(err);
-    });
+async function fetchGifs() {
+  try {
+    const response = await fetch(
+      `https://api.giphy.com/v1/gifs/translate?api_key=${apiKey}&s=cats`,
+      {
+        mode: "cors",
+      },
+    );
+    if (response.status !== 200) {
+      throw new Error(`Something went wrong! Status: ${response.status}`);
+    }
+    // console.log(response);
+    const catData = await response.json();
+    // console.log(catData);
+    divError.textContent = "";
+    gif.src = catData.data.images.downsized.url;
+  } catch (err) {
+    divError.textContent = "Something went wrong! Sorry, no kitties this time!";
+    console.log(err);
+  }
 }
 
 btnNew.addEventListener("click", () => fetchGifs());
